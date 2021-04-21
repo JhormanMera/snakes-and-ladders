@@ -5,10 +5,10 @@ public class Player {
 	private String simbol;
 	private int moves;
 	
-	public Player(String nickName, String simbol, int moves) {
-		this.nickName = nickName;
+	public Player(String simbol) {
+		this.nickName = "Default";
 		this.simbol = simbol;
-		this.moves = moves;
+		this.moves = 0;
 	}	
 	
 	public String getNickName() {
