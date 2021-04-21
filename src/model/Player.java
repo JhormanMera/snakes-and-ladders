@@ -4,11 +4,13 @@ public class Player {
 	private String nickName;
 	private String simbol;
 	private int moves;
+	private int score;
 	
 	public Player(String simbol) {
 		this.nickName = "Default";
 		this.simbol = simbol;
 		this.moves = 0;
+		this.setScore(0);
 	}	
 	
 	public String getNickName() {
@@ -33,6 +35,14 @@ public class Player {
 	
 	public void setMoves(int moves) {
 		this.moves = moves;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	

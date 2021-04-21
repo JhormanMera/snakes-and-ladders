@@ -8,7 +8,7 @@ public class Menu {
 	private Scanner sc = new Scanner(System.in);
 
 	private static final String SPACE =" ";
-	private SnakesAndLadders sL;
+	private SnakesAndLadders game;
 	
 	public Menu() {
 	}
@@ -20,9 +20,10 @@ public class Menu {
 		System.out.println("(2) Watch the ScoreBoard");
 		System.out.println("(3) Exit");
 	}
+	
 	public void gameChooser() {
-		System.out.println(" ");
-		System.out.println(" ");
+		System.out.println("Choose an option");
+		System.out.println("Assign player's symbols (1) manually or (2) automatically ");
 		int choosed = sc.nextInt();
 		sc.nextLine();
 		switch(choosed){
@@ -42,6 +43,7 @@ public class Menu {
 		String parametros = sc.nextLine();
 		sc.nextLine();
 		createWorld(parametros); 
+		game.generatePlayers();
 	}
 	
 	public void createGameManual() {
@@ -51,12 +53,13 @@ public class Menu {
 		String parametros = sc.nextLine();
 		sc.nextLine();
 		createWorld(parametros);
+		game.assignPlayers();
 	}
 
 	public void createWorld(String parametros){
 		String[] parts = parametros.split(SPACE);
-		sL = new SnakesAndLadders(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
-		System.out.println(sL);
+		game = new SnakesAndLadders(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
+		System.out.println(game);
 	}
 
 	public void doOperation(int option) {

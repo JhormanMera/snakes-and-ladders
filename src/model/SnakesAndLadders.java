@@ -2,15 +2,7 @@ package model;
 
 public class SnakesAndLadders {
 	
-	private static final String SYMBOL_1="*";
-	private static final String SYMBOL_2="!";
-	private static final String SYMBOL_3="O";
-	private static final String SYMBOL_4="X";
-	private static final String SYMBOL_5="%";
-	private static final String SYMBOL_6="$";
-	private static final String SYMBOL_7="#";
-	private static final String SYMBOL_8="+";
-	private static final String SYMBOL_9="&";
+	private static final String SYMBOLS="*!OX%$#+&";
 	private Node first;
 	private int rowsAmount;
 	private int colsAmount;
@@ -114,6 +106,10 @@ public class SnakesAndLadders {
 
 	public void setColsAmount(int colsAmount) {
 		this.colsAmount = colsAmount;
+	}
+
+	public static String getSymbols() {
+		return SYMBOLS;
 	}
 	
 	
