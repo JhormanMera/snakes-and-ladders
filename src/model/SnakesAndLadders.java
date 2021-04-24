@@ -4,6 +4,8 @@ public class SnakesAndLadders {
 	
 	private static final String SYMBOLS="*!OX%$#+&";
 	private Node first;
+	private Player root;
+	private Player one;
 	private int rowsAmount;
 	private int colsAmount;
 	
@@ -110,6 +112,22 @@ public class SnakesAndLadders {
 
 	public static String getSymbols() {
 		return SYMBOLS;
+	}
+
+	public Player getRoot() {
+		return root;
+	}
+
+	public void setRoot(Player root) {
+		this.root = root;
+	}
+
+	public Player getOne() {
+		return one;
+	}
+
+	public void setOne(Player one) {
+		this.one = one;
 	}
 	
 	

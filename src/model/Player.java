@@ -1,6 +1,11 @@
 package model;
 
 public class Player {
+	private Player parent;
+	private Player right;
+	private Player left;
+	private Player prePlayer;
+	private Player posPlayer;
 	private String nickName;
 	private String simbol;
 	private int moves;
@@ -10,7 +15,31 @@ public class Player {
 		this.nickName = "Default";
 		this.simbol = simbol;
 		this.moves = 0;
-		this.setScore(0);
+		this.score=0;
+	}	
+	
+	public Player getParent() {
+		return parent;
+	}
+
+	public void setParent(Player parent) {
+		this.parent = parent;
+	}
+
+	public Player getRight() {
+		return right;
+	}
+
+	public void setRight(Player right) {
+		this.right = right;
+	}
+
+	public Player getLeft() {
+		return left;
+	}
+
+	public void setLeft(Player left) {
+		this.left = left;
 	}	
 	
 	public String getNickName() {
@@ -43,6 +72,22 @@ public class Player {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	public Player getPrePlayer() {
+		return prePlayer;
+	}
+
+	public void setPrePlayer(Player prePlayer) {
+		this.prePlayer = prePlayer;
+	}
+
+	public Player getPosPlayer() {
+		return posPlayer;
+	}
+
+	public void setPosPlayer(Player posPlayer) {
+		this.posPlayer = posPlayer;
 	}
 
 	
