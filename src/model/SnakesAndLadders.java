@@ -1,7 +1,12 @@
 package model;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 public class SnakesAndLadders {
 	
+	private static final String INFORMATION_PATH_FILE="data/information.ptjm";
 	private static final String SYMBOLS="*!OX%$#+&";
 	private Node first;
 	private Player root;
@@ -15,6 +20,13 @@ public class SnakesAndLadders {
 		this.rowsAmount = rowsAmount;
 		this.colsAmount = colsAmount;
 		createGameBoard();
+	}
+	
+	public void saveData() throws IOException, ClassNotFoundException {
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(INFORMATION_PATH_FILE));
+
+		oos.writeObject(root);
+		oos.close();
 	}
 
 	public void createGameBoard() {
@@ -119,12 +131,13 @@ public class SnakesAndLadders {
 	
 	
 //-------------------------------------------------------------------------------------------------------------	
-	public void addWinner(Player player){
+	public void addWinner(Player player) throws ClassNotFoundException, IOException{
 		if(root == null){
 			root = player;
 		}else{
 			addWinner(root, player);
 		}
+		saveData();
 	}
 	
 	private void addWinner(Player current, Player newWinner){

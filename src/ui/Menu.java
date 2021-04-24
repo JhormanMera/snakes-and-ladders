@@ -1,17 +1,47 @@
 package ui;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Scanner;
+
+import model.Player;
 import model.SnakesAndLadders;
 
 
 public class Menu {
+	private static final String INFORMATION_PATH_FILE="data/information.ptjm";
 	private Scanner sc = new Scanner(System.in);
 
 	private static final String SPACE =" ";
 	private SnakesAndLadders game;
 	
 	public Menu() {
+		try {
+			loadData();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	
+	@SuppressWarnings("unchecked") 
+		public boolean loadData() throws IOException, ClassNotFoundException {
+			File f = new File(INFORMATION_PATH_FILE);
+			boolean loaded = false;
+			if (f.exists()) {
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+
+				game.setRoot((Player) ois.readObject()); 
+				ois.close();
+				loaded = true;
+			}
+			return loaded;
+		}
 
 	public void showMenu() {
 		System.out.println("Welcome to Snakes And Ladders");

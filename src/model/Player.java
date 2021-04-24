@@ -1,6 +1,11 @@
 package model;
 
-public class Player {
+
+import java.io.Serializable;
+
+public class Player implements Serializable {
+
+	private static final long serialVersionUID = -7185338699268148624L;
 	private Player parent;
 	private Player right;
 	private Player left;
@@ -17,6 +22,7 @@ public class Player {
 		this.moves = 0;
 		this.score=0;
 	}	
+
 	
 	public Player getParent() {
 		return parent;
