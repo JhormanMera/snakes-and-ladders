@@ -8,6 +8,9 @@ public class Node {
 	private Node post;
 	private int row;
 	private int col;
+	private int id;
+	private String playersID;
+
 	
 	public Node(int row, int col) {
 		this.row = row;
@@ -65,5 +68,21 @@ public class Node {
 	@Override
 	public String toString(){
 		return "[("+row+","+col+")]";
+	}
+
+	public String getPlayersID() {
+		return playersID;
+	}
+
+	public void setPlayersID(String playersID) {
+		this.playersID = playersID;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	} 
 }
