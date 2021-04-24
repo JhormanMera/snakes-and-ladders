@@ -5,7 +5,7 @@ public class Player {
 	private Player right;
 	private Player left;
 	private Player prePlayer;
-	private Player posPlayer;
+	private Player postPlayer;
 	private String nickName;
 	private String simbol;
 	private int moves;
@@ -82,12 +82,12 @@ public class Player {
 		this.prePlayer = prePlayer;
 	}
 
-	public Player getPosPlayer() {
-		return posPlayer;
+	public Player getPostPlayer() {
+		return postPlayer;
 	}
 
-	public void setPosPlayer(Player posPlayer) {
-		this.posPlayer = posPlayer;
+	public void setPostPlayer(Player postPlayer) {
+		this.postPlayer = postPlayer;
 	}
 
 	

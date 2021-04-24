@@ -88,83 +88,115 @@ public class SnakesAndLadders {
 	}
 	
 	public void addPlayer(Player player){
-		if(root == null){
-			root = player;
+		if(one == null){
+			one = player;
 		}else{
-			addPlayer(root, player);
+			addPlayer(one, player);
 		}
 	}
 	
+	
 	private void addPlayer(Player current, Player newPlayer){
-		if(newPlayer.getScore() <= current.getScore()){
-			if(current.getLeft() == null){
-				current.setLeft(newPlayer);
-				newPlayer.setParent(current);
+		if(current.getPostPlayer() == null){
+				current.setPostPlayer(newPlayer);
+				newPlayer.setPrePlayer(current);
 			} else{
-				addPlayer(current.getLeft(), newPlayer);
+				addPlayer(current.getPostPlayer(), newPlayer);
+			}
+		}
+	
+	public Player searchPlayer(String simbol){
+		return searchPlayer(one, simbol);
+	}
+	
+	private Player searchPlayer(Player current, String simbol){
+		if(current == null || current.getSimbol() == simbol){
+			return current;
+		}else{
+			return searchPlayer(current.getPostPlayer(), simbol);
+		}
+	}
+	
+	
+//-------------------------------------------------------------------------------------------------------------	
+	public void addWinner(Player player){
+		if(root == null){
+			root = player;
+		}else{
+			addWinner(root, player);
+		}
+	}
+	
+	private void addWinner(Player current, Player newWinner){
+		if(newWinner.getScore() <= current.getScore()){
+			if(current.getLeft() == null){
+				current.setLeft(newWinner);
+				newWinner.setParent(current);
+			} else{
+				addWinner(current.getLeft(), newWinner);
 			}
 		} else{
 			if(current.getRight() == null){
-				current.setRight(newPlayer);
-				newPlayer.setParent(current);
+				current.setRight(newWinner);
+				newWinner.setParent(current);
 			} else{
-				addPlayer(current.getRight(), newPlayer);
+				addWinner(current.getRight(), newWinner);
 			}			
 		}
 	}
 	
-	public Player searchPlayer(int score){
-		return searchPlayer(root, score);
+	public Player searchWinner(int score){
+		return searchWinner(root, score);
 	}
 	
-	private Player searchPlayer(Player current, int score){
+	private Player searchWinner(Player current, int score){
 		if(current == null || current.getScore() == score){
 			return current;
 		}else if(current.getScore() < score){
-			return searchPlayer(current.getRight(), score);
+			return searchWinner(current.getRight(), score);
 		}else{
-			return searchPlayer(current.getLeft(), score);
+			return searchWinner(current.getLeft(), score);
 		}
 	}
 	
-	public void removePlayer(int score){
-		Player rmvPlayer = searchPlayer(score);
-		removePlayer(rmvPlayer);
+	public void removeWinner(int score){
+		Player rmvWinner = searchWinner(score);
+		removeWinner(rmvWinner);
 	}
 	
-	private void removePlayer(Player rmvPlayer){
-		if(rmvPlayer!=null){
-			if(rmvPlayer.getLeft()==null && rmvPlayer.getRight()==null){ //Case 1
-				if(rmvPlayer == root){
+	private void removeWinner(Player rmvWinner){
+		if(rmvWinner!=null){
+			if(rmvWinner.getLeft()==null && rmvWinner.getRight()==null){ //Case 1
+				if(rmvWinner == root){
 					root = null;
-				}else if(rmvPlayer.getParent().getLeft() == rmvPlayer){
-					rmvPlayer.getParent().setLeft(null);
+				}else if(rmvWinner.getParent().getLeft() == rmvWinner){
+					rmvWinner.getParent().setLeft(null);
 				}else{
-					rmvPlayer.getParent().setRight(null);
+					rmvWinner.getParent().setRight(null);
 				}
-				rmvPlayer.setParent(null);
-			}else if(rmvPlayer.getLeft()==null || rmvPlayer.getRight()==null){ //Case 2
+				rmvWinner.setParent(null);
+			}else if(rmvWinner.getLeft()==null || rmvWinner.getRight()==null){ //Case 2
 				Player onlySon;
-				if(rmvPlayer.getLeft()!=null){
-					onlySon = rmvPlayer.getLeft();
+				if(rmvWinner.getLeft()!=null){
+					onlySon = rmvWinner.getLeft();
 				}else{
-					onlySon = rmvPlayer.getRight();
+					onlySon = rmvWinner.getRight();
 				}
-				onlySon.setParent(rmvPlayer.getParent());
-				if(rmvPlayer == root){
+				onlySon.setParent(rmvWinner.getParent());
+				if(rmvWinner == root){
 					root = onlySon;
-				}else if(rmvPlayer.getParent().getLeft() == rmvPlayer){
-					rmvPlayer.getParent().setLeft(onlySon);
+				}else if(rmvWinner.getParent().getLeft() == rmvWinner){
+					rmvWinner.getParent().setLeft(onlySon);
 				}else{
-					rmvPlayer.getParent().setRight(onlySon);
+					rmvWinner.getParent().setRight(onlySon);
 				}
 			}else{ //Case 3
-				Player successor = min(rmvPlayer.getRight());
-				rmvPlayer.setScore(successor.getScore());
-				rmvPlayer.setMoves(successor.getMoves());
-				rmvPlayer.setSimbol(successor.getSimbol());
-				rmvPlayer.setNickName(successor.getNickName());
-				removePlayer(successor);
+				Player successor = min(rmvWinner.getRight());
+				rmvWinner.setScore(successor.getScore());
+				rmvWinner.setMoves(successor.getMoves());
+				rmvWinner.setSimbol(successor.getSimbol());
+				rmvWinner.setNickName(successor.getNickName());
+				removeWinner(successor);
 			}
 		}
 	}
