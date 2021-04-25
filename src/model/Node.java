@@ -17,6 +17,7 @@ public class Node {
 	public Node(int row, int col) {
 		this.row = row;
 		this.col = col;
+		this.id=0;
 	}
 
 	public Node getUp() {
@@ -69,7 +70,7 @@ public class Node {
 	
 	@Override
 	public String toString(){
-		return "[("+row+","+col+")]";
+		return "[("+id+")]";
 	}
 
 	public String getPlayersID() {

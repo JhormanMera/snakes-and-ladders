@@ -29,7 +29,7 @@ public class Menu {
 		}
 	}
 	
-	@SuppressWarnings("unchecked") 
+	//@SuppressWarnings("unchecked") 
 		public boolean loadData() throws IOException, ClassNotFoundException {
 			File f = new File(INFORMATION_PATH_FILE);
 			boolean loaded = false;
@@ -58,10 +58,10 @@ public class Menu {
 		sc.nextLine();
 		switch(choosed){
 		case 1:
-			createGameAutomatically();
+			createGameManual();
 			break;
 		case 2:
-			createGameManual();
+			createGameAutomatically();
 			break;
 		default:
 			System.out.println("Invalid option, try again");			
@@ -71,7 +71,6 @@ public class Menu {
 		System.out.println("Write the game's parameters as follow: ");
 		System.out.println("On the same line separated with spaces the amount of rows, columns, snakes, ladders and players (Minimum 1 and Maximum 9 Players)");
 		String parametros = sc.nextLine();
-		sc.nextLine();
 		createWorld(parametros); 
 		game.generatePlayers();
 	}
@@ -81,7 +80,6 @@ public class Menu {
 		System.out.println("On the same line separated with spaces the amount of rows, columns, snakes, ladders and finally the player's symbols (The symbols must to be together)(Minimum 1 and Maximum 9 Players)");
 		System.out.println("The allowed symbols are: * ! O X % $ # + &");
 		String parametros = sc.nextLine();
-		sc.nextLine();
 		createWorld(parametros);
 		game.assignPlayers();
 	}
@@ -117,7 +115,7 @@ public class Menu {
 		int option = readOption();
 
 		if (option == 3){
-			System.out.println("Thanks for using this app");
+			System.out.println("Thanks for using this game :)");
 		}else{
 			doOperation(option);
 			startProgram();

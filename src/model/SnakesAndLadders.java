@@ -20,6 +20,7 @@ public class SnakesAndLadders {
 		this.rowsAmount = rowsAmount;
 		this.colsAmount = colsAmount;
 		createGameBoard();
+		matrixEnum(first);
 	}
 	
 	public void saveData() throws IOException, ClassNotFoundException {
@@ -44,7 +45,7 @@ public class SnakesAndLadders {
 	}
 	
 	private void createRow(int i, int j, Node firstRow){ 
-		createCol(i,j+1,firstRow);
+		createCol(i,j+1,firstRow,firstRow.getUp());
 		if(i+1 < rowsAmount){
 			Node firstDownRow = new Node(i+1,j);
 			firstDownRow.setUp(firstRow);
@@ -53,27 +54,60 @@ public class SnakesAndLadders {
 		}
 	}
 
-	private void createCol(int i, int j, Node left){ 
+	private void createCol(int i, int j, Node left, Node rowPrev){ 
 		if(j<colsAmount){
 			Node current = new Node(i,j);
 			current.setPre(left);
 			left.setPost(current);
 
-			/*if(rowPrev != null){
-	                rowPrev = rowPrev.getRight();
-	                current.setTop(rowPrev);
-	                rowPrev.setBottom(current);
-	            }*/
-
-			createCol(i,j+1, current);
+			if(rowPrev != null){
+	                rowPrev = rowPrev.getPost();
+	                current.setUp(rowPrev);
+	                rowPrev.setDown(current);
+	            }
+			createCol(i,j+1, current, rowPrev);
 		}
 	}
+	
 	@Override
 	public String toString(){
 		String msg = "";
 		msg = printRow(first);
 		return msg;
 	}
+	
+	public void matrixEnum(Node firstNode) {
+        matrixFirstRow(firstNode);
+    }
+
+    public void matrixFirstRow(Node firstRow) {
+        if (firstRow.getDown() != null) {
+            matrixFirstRow(firstRow.getDown());
+        } else {
+            firstRow.setId(1);
+            matrixRightRow(firstRow);
+        }
+    }
+
+    public void matrixRightRow(Node rightRow) {
+        if (rightRow.getPost() != null) {
+            rightRow.getPost().setId(rightRow.getId() + 1);
+            matrixRightRow(rightRow.getPost());
+        } else if (rightRow.getUp() != null) {
+            rightRow.getUp().setId(rightRow.getId() + 1);
+            matrixLeftRow(rightRow.getUp());
+        }
+    }
+
+    public void matrixLeftRow(Node leftRow) {
+        if (leftRow.getPre() != null) {
+            leftRow.getPre().setId(leftRow.getId() + 1);
+            matrixLeftRow(leftRow.getPre());
+        } else if (leftRow.getUp() != null) {
+            leftRow.getUp().setId(leftRow.getId() + 1);
+            matrixRightRow(leftRow.getUp());
+        }
+    }
 
 	public String printRow(Node firstRow){
 		String msg = "";
@@ -83,14 +117,13 @@ public class SnakesAndLadders {
 		}
 		return msg;
 	}
-
+	
 	public String printCol(Node current){
 		String msg = "";
 		if(current != null){
 			msg = current.toString();
 			msg += printCol(current.getPost());
 		}
-
 		return msg;
 	}    
 	
@@ -130,7 +163,7 @@ public class SnakesAndLadders {
 	}
 	
 	
-//-------------------------------------------------------------------------------------------------------------	
+//----------------Métodos Arbol Binario---------------------------------------------------------------------------------------------	
 	public void addWinner(Player player) throws ClassNotFoundException, IOException{
 		if(root == null){
 			root = player;
