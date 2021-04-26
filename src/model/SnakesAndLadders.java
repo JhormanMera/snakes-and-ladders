@@ -1,7 +1,10 @@
 package model;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class SnakesAndLadders {
@@ -14,34 +17,58 @@ public class SnakesAndLadders {
 	private int rowsAmount;
 	private int colsAmount;
 	
-
-
-	public SnakesAndLadders( int rowsAmount, int colsAmount) {
-		this.rowsAmount = rowsAmount;
-		this.colsAmount = colsAmount;
-		createGameBoard();
-		matrixEnum(first);
+	public SnakesAndLadders() {
+		try {
+			loadData();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void saveData() throws IOException, ClassNotFoundException {
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(INFORMATION_PATH_FILE));
-
 		oos.writeObject(root);
 		oos.close();
 	}
-
-	public void createGameBoard() {
+	//@SuppressWarnings("unchecked") 
+	public boolean loadData() throws IOException, ClassNotFoundException {
+		File f = new File(INFORMATION_PATH_FILE);
+		boolean loaded = false;
+		if (f.exists()) {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+			root= (Player) ois.readObject(); 
+			ois.close();
+			loaded = true;
+		}
+		return loaded;
+	}
+	public void createGameBoard(int rowsAmount, int colsAmount) {
+		this.rowsAmount=rowsAmount;
+		this.colsAmount=colsAmount;
 		first= new Node(0,0);
 		createRow(0,0,first);
-
+		matrixEnum(first);
 	}
 	
-	public void generatePlayers() {
-		
+	public void generatePlayers(int start,int num) {
+		if(start<num) {
+			char a = SYMBOLS.charAt(start);
+			Player newPlayer = new Player(a);
+			addPlayer(newPlayer);
+			generatePlayers(start+1,num);
+		}
 	}
 	
-	public void assignPlayers() {
-		
+	public void assignPlayers(int start,String sym) {
+		if (sym.length()<=SYMBOLS.length()&&start<sym.length()) {
+			Player newPlayer = new Player(sym.charAt(start));	
+			addPlayer(newPlayer);
+			assignPlayers(start+1,sym);
+		}
 	}
 	
 	private void createRow(int i, int j, Node firstRow){ 
@@ -140,7 +167,6 @@ public class SnakesAndLadders {
 		}
 	}
 	
-	
 	private void addPlayer(Player current, Player newPlayer){
 		if(current.getPostPlayer() == null){
 				current.setPostPlayer(newPlayer);
@@ -150,12 +176,12 @@ public class SnakesAndLadders {
 			}
 		}
 	
-	public Player searchPlayer(String simbol){
+	public Player searchPlayer(char simbol){
 		return searchPlayer(one, simbol);
 	}
 	
-	private Player searchPlayer(Player current, String simbol){
-		if(current == null || current.getSimbol() == simbol){
+	private Player searchPlayer(Player current, char simbol){
+		if(current == null || current.getSymbol() == simbol){
 			return current;
 		}else{
 			return searchPlayer(current.getPostPlayer(), simbol);
@@ -173,11 +199,12 @@ public class SnakesAndLadders {
 		saveData();
 	}
 	
-	private void addWinner(Player current, Player newWinner){
+	private void addWinner(Player current, Player newWinner) throws ClassNotFoundException, IOException{
 		if(newWinner.getScore() <= current.getScore()){
 			if(current.getLeft() == null){
 				current.setLeft(newWinner);
 				newWinner.setParent(current);
+				saveData();
 			} else{
 				addWinner(current.getLeft(), newWinner);
 			}
@@ -185,6 +212,7 @@ public class SnakesAndLadders {
 			if(current.getRight() == null){
 				current.setRight(newWinner);
 				newWinner.setParent(current);
+				saveData();
 			} else{
 				addWinner(current.getRight(), newWinner);
 			}			
@@ -240,7 +268,7 @@ public class SnakesAndLadders {
 				Player successor = min(rmvWinner.getRight());
 				rmvWinner.setScore(successor.getScore());
 				rmvWinner.setMoves(successor.getMoves());
-				rmvWinner.setSimbol(successor.getSimbol());
+				rmvWinner.setSymbol(successor.getSymbol());
 				rmvWinner.setNickName(successor.getNickName());
 				removeWinner(successor);
 			}
@@ -254,7 +282,22 @@ public class SnakesAndLadders {
 			return min(current.getLeft());
 		}
 	}
+	
+	public void printWinners(){
+		printWinners(root);
+    }
+    
+    private void printWinners(Player player){
+        if(player == null) {
+        	System.out.println("There aren't winners yet"+"\n");             
+        }else {
+        printWinners(player.getLeft());
+        System.out.println(player.toString());
+        printWinners(player.getRight());
+        }
+    }
 
+	
 	public Node getFirst() {
 		return first;
 	}

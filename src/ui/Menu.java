@@ -1,48 +1,20 @@
 package ui;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Scanner;
 
-import model.Player;
+import java.util.Scanner;
 import model.SnakesAndLadders;
 
 
 public class Menu {
-	private static final String INFORMATION_PATH_FILE="data/information.ptjm";
+
 	private Scanner sc = new Scanner(System.in);
 
 	private static final String SPACE =" ";
 	private SnakesAndLadders game;
-	
 	public Menu() {
-		try {
-			loadData();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		game = new SnakesAndLadders();
 	}
 	
-	//@SuppressWarnings("unchecked") 
-		public boolean loadData() throws IOException, ClassNotFoundException {
-			File f = new File(INFORMATION_PATH_FILE);
-			boolean loaded = false;
-			if (f.exists()) {
-				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
-
-				game.setRoot((Player) ois.readObject()); 
-				ois.close();
-				loaded = true;
-			}
-			return loaded;
-		}
-
 	public void showMenu() {
 		System.out.println("Welcome to Snakes And Ladders");
 		System.out.println("Choose an option");
@@ -51,53 +23,34 @@ public class Menu {
 		System.out.println("(3) Exit");
 	}
 	
-	public void gameChooser() {
-		System.out.println("Choose an option");
-		System.out.println("Assign player's symbols (1) manually or (2) automatically ");
-		int choosed = sc.nextInt();
-		sc.nextLine();
-		switch(choosed){
-		case 1:
-			createGameManual();
-			break;
-		case 2:
-			createGameAutomatically();
-			break;
-		default:
-			System.out.println("Invalid option, try again");			
-		}
-	}
-	public void createGameAutomatically() {
+
+	public void createGame() {
 		System.out.println("Write the game's parameters as follow: ");
-		System.out.println("On the same line separated with spaces the amount of rows, columns, snakes, ladders and players (Minimum 1 and Maximum 9 Players)");
-		String parametros = sc.nextLine();
-		createWorld(parametros); 
-		game.generatePlayers();
-	}
-	
-	public void createGameManual() {
-		System.out.println("Write the game's parameters as follow: ");
-		System.out.println("On the same line separated with spaces the amount of rows, columns, snakes, ladders and finally the player's symbols (The symbols must to be together)(Minimum 1 and Maximum 9 Players)");
+		System.out.println("On the same line separated with spaces the amount of rows, columns, snakes, ladders and finally the player's amount or the player's symbols (The symbols must to be together)(Minimum 1 and Maximum 9 Players)");
 		System.out.println("The allowed symbols are: * ! O X % $ # + &");
 		String parametros = sc.nextLine();
 		createWorld(parametros);
-		game.assignPlayers();
 	}
 
 	public void createWorld(String parametros){
 		String[] parts = parametros.split(SPACE);
-		game = new SnakesAndLadders(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
+		game.createGameBoard(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
+		try {
+			int a = Integer.parseInt(parts[4]);
+			game.generatePlayers(0,a);
+		}catch(NumberFormatException ex){	
+			game.assignPlayers(0,parts[4]);
+		}
 		System.out.println(game);
 	}
 
 	public void doOperation(int option) {
 		switch (option) {
 		case 1:
-			gameChooser();
+			createGame();
 			break;
-
 		case 2:
-			;
+			game.printWinners();
 			break;
 		default:
 			System.out.println("Invalid option, try again");

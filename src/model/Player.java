@@ -12,13 +12,13 @@ public class Player implements Serializable {
 	private Player prePlayer;
 	private Player postPlayer;
 	private String nickName;
-	private String simbol;
+	private char symbol;
 	private int moves;
 	private int score;
 	
-	public Player(String simbol) {
+	public Player(char symbol) {
 		this.nickName = "Default";
-		this.simbol = simbol;
+		this.symbol = symbol;
 		this.moves = 0;
 		this.score=0;
 	}	
@@ -56,12 +56,12 @@ public class Player implements Serializable {
 		this.nickName = nickName;
 	}
 
-	public String getSimbol() {
-		return simbol;
+	public char getSymbol() {
+		return symbol;
 	}
 
-	public void setSimbol(String simbol) {
-		this.simbol = simbol;
+	public void setSymbol(char symbol) {
+		this.symbol = symbol;
 	}
 
 	public int getMoves() {
@@ -94,6 +94,10 @@ public class Player implements Serializable {
 
 	public void setPostPlayer(Player postPlayer) {
 		this.postPlayer = postPlayer;
+	}
+	@Override
+	public String toString() {
+		return "Player : "+nickName+" Symbol "+symbol+" Score: "+score;
 	}
 
 	
