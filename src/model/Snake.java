@@ -6,10 +6,8 @@ public class Snake {
 	private Node begin;
 	private Node end;	
 	
-	public Snake(char letter, Node begin, Node end) {
-		this.letter = letter;
-		this.begin = begin;
-		this.end = end;
+	public Snake(char letter) {
+		this.letter=letter;
 	}
 
 	public char getLetter() {

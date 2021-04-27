@@ -34,6 +34,7 @@ public class Menu {
 
 	public void createWorld(String parametros){
 		String[] parts = parametros.split(SPACE);
+		game.setOne(null);
 		game.createGameBoard(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
 		try {
 			int a = Integer.parseInt(parts[4]);

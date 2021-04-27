@@ -7,10 +7,8 @@ public class Ladder {
 	private Node end;
 	
 	
-	public Ladder(int id, Node begin, Node end) {
+	public Ladder(int id) {
 		this.id = id;
-		this.begin = begin;
-		this.end = end;
 	}
 	
 	public int getId() {

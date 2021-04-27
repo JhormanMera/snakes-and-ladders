@@ -154,6 +154,44 @@ public class SnakesAndLadders {
 		return msg;
 	}    
 	
+	public Node searchNode(int id){
+		return searchNode(first, id);
+	}
+	
+	private Node searchNode(Node current, int id){
+		if(current.getPost()!=null && current.getId()<id){
+			return searchNode(current.getPost(),id);
+		}else if(current.getPre()!=null && current.getId()>id){
+			return searchNode(current.getPre(),id);
+		}else if(current.getUp()!=null && current.getId()<id) {
+			return searchNode(current.getUp(),id);
+		}else if(current.getDown()!=null && current.getId()>id) {
+			return searchNode(current.getDown(),id);
+		}else{
+			return current;
+		}
+	}
+	
+	public void generateSnakes(int num, int num2, char letter) {
+		if(num>num2) {
+			Snake snake=new Snake(letter);
+		}
+	}
+	
+	private void generateSnakes(Snake snake, int num) {
+		int snake = (int) Math.floor(Math.random()*(6-1+1)+1); 
+		int maximum= rowsAmount*colsAmount;
+		if(snake<maximum && snake>1) {
+			if(searchNode(snake).getLadder()==null&&searchNode(snake).getSnake()==null) {
+				
+			}
+		}
+	}
+	
+	public void generateLadders() {
+		
+	}
+	
 	public int generateDice(){
 		int dice = (int) Math.floor(Math.random()*(6-1+1)+1); 
 		return dice;
