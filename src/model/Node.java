@@ -18,6 +18,7 @@ public class Node {
 		this.row = row;
 		this.col = col;
 		this.id=0;
+		playersID=" ";
 	}
 
 	public Node getUp() {
@@ -70,7 +71,26 @@ public class Node {
 	
 	@Override
 	public String toString(){
-		return "[("+id+")]";
+		if(id<10&&ladder==null&&snake==null) {
+			return "[ "+id+" ]";
+		}else if(id<10&&ladder!=null) {
+			return "["+id+ladder.getId()+"]";
+		}else if(id<10&&snake!=null) {
+			return "["+id+snake.getLetter()+"]";
+		}else {
+			return "["+id+" ]";
+		}
+		
+	}
+	
+	public String container() {
+		if(ladder!=null) {
+			return "["+ladder.getId()+playersID+" ]";
+		}else if(id<10&&snake!=null) {
+			return "["+snake.getLetter()+playersID+" ]";
+		}else {
+			return "[ "+playersID+" ]";
+		}
 	}
 
 	public String getPlayersID() {
