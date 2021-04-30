@@ -254,6 +254,7 @@ public class SnakesAndLadders {
 	
 //----------------------------------------------------NODE--------------------------------------------------------------------
   
+	
 	public Node searchNode(int id){
 		return searchNode(first, id);
 	}
@@ -261,12 +262,8 @@ public class SnakesAndLadders {
 	private Node searchNode(Node current, int id){
 		if(current.getPost()!=null && current.getId()<id){
 			return searchNode(current.getPost(),id);
-		}else if(current.getPre()!=null && current.getId()>id){
-			return searchNode(current.getPre(),id);
-		}else if(current.getUp()!=null && current.getId()<id) {
+		}else if(current.getPost()==null && current.getUp()!=null && current.getId()<id) {
 			return searchNode(current.getUp(),id);
-		}else if(current.getDown()!=null && current.getId()>id) {
-			return searchNode(current.getDown(),id);
 		}else{
 			return current;
 		}

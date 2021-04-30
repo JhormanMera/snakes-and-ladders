@@ -15,6 +15,42 @@ public class Menu {
 		game = new SnakesAndLadders();
 	}
 	
+	 public void initializeGame(boolean render) {
+        if (render == false) {
+            System.out.println("Press enter to continue");
+            String jump = sc.nextLine();
+            if (jump.equals("")) {
+                System.out.println(game.generateDice());
+                System.out.println(game);
+                initializeGame(render);
+            } else if (jump.equals("simul")) {
+                System.out.println("Simulation mode has started");
+                gameSimulation();
+            } else if (jump.equals("menu")) {
+                System.out.println("Back to the main menu");
+                return;
+            } else if (jump.equals("num")) {
+                System.out.println(game);
+                initializeGame(render);
+            } else {
+                System.out.println("You must enter a valid option");
+                initializeGame(render);
+            }
+        } else {
+        	System.out.println(calculateWinner());
+           
+        }
+    }
+	private String calculateWinner() {
+		String msg="";
+		return msg;
+	}
+
+	private void gameSimulation() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void showMenu() {
 		System.out.println("Welcome to Snakes And Ladders");
 		System.out.println("Choose an option");
@@ -43,6 +79,7 @@ public class Menu {
 			game.assignPlayers(0,parts[4]);
 		}
 		System.out.println(game);
+		initializeGame(false);
 	}
 
 	public void doOperation(int option) {
