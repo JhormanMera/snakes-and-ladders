@@ -16,13 +16,14 @@ public class Menu {
 	}
 	
 	 public void initializeGame(boolean render) {
+		 game.setVisibility(false);
         if (render == false) {
             System.out.println("Press enter to continue");
             String jump = sc.nextLine();
             if (jump.equals("")) {
                 System.out.println(game.generateDice());
                 System.out.println(game);
-                initializeGame(render);
+                initializeGame(game.getContPlaying());
             } else if (jump.equals("simul")) {
                 System.out.println("Simulation mode has started");
                 gameSimulation();
@@ -30,6 +31,7 @@ public class Menu {
                 System.out.println("Back to the main menu");
                 return;
             } else if (jump.equals("num")) {
+            	game.setVisibility(true);
                 System.out.println(game);
                 initializeGame(render);
             } else {
@@ -37,18 +39,13 @@ public class Menu {
                 initializeGame(render);
             }
         } else {
-        	System.out.println(calculateWinner());
+        	System.out.println(game.calculateWinner());
            
         }
     }
-	private String calculateWinner() {
-		String msg="";
-		return msg;
-	}
 
 	private void gameSimulation() {
-		// TODO Auto-generated method stub
-		
+				
 	}
 
 	public void showMenu() {

@@ -86,7 +86,7 @@ public class Node {
 	public String container() {
 		if(ladder!=null) {
 			return "["+ladder.getId()+playersID+" ]";
-		}else if(id<10&&snake!=null) {
+		}else if(snake!=null) {
 			return "["+snake.getLetter()+playersID+" ]";
 		}else {
 			return "[ "+playersID+" ]";

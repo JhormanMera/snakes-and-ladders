@@ -17,6 +17,8 @@ public class SnakesAndLadders {
 	private Player one;
 	private int rowsAmount;
 	private int colsAmount;
+	private boolean visibility;
+	private boolean contPlaying;
 	
 	public SnakesAndLadders() {
 		try {
@@ -61,6 +63,8 @@ public class SnakesAndLadders {
 	* @param colsAmount type int
 	*/	
 	public void createGameBoard(int rowsAmount, int colsAmount) {
+		this.visibility=true;
+		this.contPlaying=false;
 		this.rowsAmount=rowsAmount;
 		this.colsAmount=colsAmount;
 		first= new Node(0,0);
@@ -177,8 +181,12 @@ public class SnakesAndLadders {
 
 	public String printCol(Node current){
 		String msg = "";
-		if(current != null){
-			msg = current.toString();
+		if(current != null) {
+			if(visibility==true) {
+				msg = current.toString();
+			}else {
+				msg = current.container();
+			}
 			msg += printCol(current.getPost());
 		}
 		return msg;
@@ -229,6 +237,22 @@ public class SnakesAndLadders {
 		this.one = one;
 	}
 	
+	public boolean getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(boolean visibility) {
+		this.visibility = visibility;
+	}
+
+	public boolean getContPlaying() {
+		return contPlaying;
+	}
+
+	public void setContPlaying(boolean contPlaying) {
+		this.contPlaying = contPlaying;
+	}
+	
 //-----------------------------------------PLAYERS-----------------------------------------------------------------------
 	
 	public void generatePlayers(int start,int num) {
@@ -246,10 +270,6 @@ public class SnakesAndLadders {
 			addPlayer(newPlayer);
 			assignPlayers(start+1,sym);
 		}
-	}
-
-	public void playerMove(Player player,int dice) {
-
 	}
 	
 //----------------------------------------------------NODE--------------------------------------------------------------------
@@ -269,11 +289,20 @@ public class SnakesAndLadders {
 		}
 	}
 	
-//-----------------------------------------------DICE------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------DICE AND PLAYER MOVES------------------------------------------------------------------------------------------------------------------------------
 	
 	public int generateDice(){
 		int dice = (int) Math.floor(Math.random()*(6-1+1)+1); 
 		return dice;
+	}
+	
+	public String calculateWinner() {
+		String msg="";
+		return msg;
+	}
+	
+	public void playerMove(Player player,int dice) {
+
 	}
 	
 //-----------------------------------------------SNAKES--------------------------------------------------------------------------------------------------------------------
@@ -495,6 +524,5 @@ public class SnakesAndLadders {
 			 System.out.println(player.toString());
 			 printWinners(player.getRight());
 		 }
-	 }	
-
+	 }
 }
