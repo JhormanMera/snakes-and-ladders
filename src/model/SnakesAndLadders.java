@@ -30,7 +30,7 @@ public class SnakesAndLadders {
 		}
 	}
 	
-// -----------------SERIALIZABLE--------------------
+// ---------------------------------------------SERIALIZABLE----------------------------------------------------------
 	
 	public void saveData() throws IOException, ClassNotFoundException {
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(INFORMATION_PATH_FILE));
@@ -51,8 +51,15 @@ public class SnakesAndLadders {
 		return loaded;
 	}
 	
-//-----------------START GAME---------------------------------
+//---------------------------------------------START GAME--------------------------------------------------------------------------------------------------------------
 	
+	/** 
+	*  Create the game board <br>
+	* <b> pre: The parameters must to be positive integers </b> 
+	* <b> post: Create the game board size: rowsAmount*colsAmount and prints the the game board overview</b> 
+	* @param rowsAmount type int
+	* @param colsAmount type int
+	*/	
 	public void createGameBoard(int rowsAmount, int colsAmount) {
 		this.rowsAmount=rowsAmount;
 		this.colsAmount=colsAmount;
@@ -61,6 +68,14 @@ public class SnakesAndLadders {
 		matrixEnum(first);
 	}
 	
+	/** 
+	*  Create the rows and make the recursive call of 'createColums' to create the columns inside this method <br>
+	* <b> pre: The object 'firstRow' must to be != null </b> 
+	* <b> post: Create the rows and columns indicated by the user</b> 
+	* @param i type int
+	* @param j type int
+	* @param firstRow type Node
+	*/	
 	private void createRow(int i, int j, Node firstRow){ 
 		createCol(i,j+1,firstRow,firstRow.getUp());
 		if(i+1 < rowsAmount){
@@ -71,6 +86,14 @@ public class SnakesAndLadders {
 		}
 	}
 
+	/** 
+	*  Create the columns <br>
+	* <b> pre: The object 'rowPrev' must to be != null </b> 
+	* <b> post: Create the columns indicated by the user</b> 
+	* @param i type int
+	* @param j type int
+	* @param rowPrev type Node
+	*/	
 	private void createCol(int i, int j, Node left, Node rowPrev){ 
 		if(j<colsAmount){
 			Node current = new Node(i,j);
@@ -86,6 +109,11 @@ public class SnakesAndLadders {
 		}
 	}
 
+	/** 
+	* Transform columns and rows to string <br>
+	* <b> pre: The complete game board must have been created before </b> 
+	* @return Return the initial content of the game board inside a String
+	*/	
 	@Override
 	public String toString(){
 		String msg = "";
@@ -93,10 +121,22 @@ public class SnakesAndLadders {
 		return msg;
 	}
 
+	/** 
+	* The id are put to each of the nodes of the matrix <br>
+	* <b> pre: The complete game board must have been created before </b> 
+	* @param i type int
+	* @return Return the initial content of the game board inside a String
+	*/	
 	public void matrixEnum(Node firstNode) {
 		matrixFirstRow(firstNode);
 	}
 
+	/** 
+	* Look for the initial node to put the id 1, and also recursively call the 'matrixRightRow' method in order to assign the id to the rest of the nodes within this method <br>
+	* <b> pre: The complete game board must have been created before </b> 
+	* <b> post: Assigns the id to the initial node and assigns the id to the other nodes by the recursive call </b>
+	* @param fistRow type Node
+	*/	
 	public void matrixFirstRow(Node firstRow) {
 		if (firstRow.getDown() != null) {
 			matrixFirstRow(firstRow.getDown());
@@ -144,7 +184,7 @@ public class SnakesAndLadders {
 		return msg;
 	}  
 	
-//--------------------GAME ITEMS---------------------------------
+//-------------------------------------------GAME ITEMS--------------------------------------------------------------
 	public Node getFirst() {
 		return first;
 	}
@@ -189,7 +229,7 @@ public class SnakesAndLadders {
 		this.one = one;
 	}
 	
-	//----------PLAYERS-----------------
+//-----------------------------------------PLAYERS-----------------------------------------------------------------------
 	
 	public void generatePlayers(int start,int num) {
 		if(start<num) {
@@ -212,7 +252,7 @@ public class SnakesAndLadders {
 
 	}
 	
-	//--------------NODE--------------
+//----------------------------------------------------NODE--------------------------------------------------------------------
   
 	public Node searchNode(int id){
 		return searchNode(first, id);
@@ -232,14 +272,14 @@ public class SnakesAndLadders {
 		}
 	}
 	
-	//---------------DICE------------------
+//-----------------------------------------------DICE------------------------------------------------------------------------------------------------------------------------------
 	
 	public int generateDice(){
 		int dice = (int) Math.floor(Math.random()*(6-1+1)+1); 
 		return dice;
 	}
 	
-	//----------------SNAKES-------------------
+//-----------------------------------------------SNAKES--------------------------------------------------------------------------------------------------------------------
 	
 	public void setSnakes(int currentSnakes,int createdSnakes){
 		if(currentSnakes>createdSnakes){
@@ -280,7 +320,7 @@ public class SnakesAndLadders {
 		}
 	}
 	 
-	 //------------LADDERS-----------------------------------------
+//----------------------------------------------LADDERS--------------------------------------------------------------------------------------------------------------------------------------------
 	   
 	 public void setLadders(int currentLadders, int createdLadders){
 		 if(currentLadders>createdLadders){
@@ -319,7 +359,7 @@ public class SnakesAndLadders {
 		 }
 	 }
 
-//--------------LINKED LIST-------------------------------------------
+//--------------------------------------------LINKED LIST------------------------------------------------------------------------
 	
 	 public void addPlayer(Player player){
 		 if(one == null){
@@ -351,7 +391,7 @@ public class SnakesAndLadders {
 	 }
 
 
-//----------------BINARY SEARCH TREE---------------------------------------------------------------------------------------------	
+//-----------------------------------------BINARY SEARCH TREE---------------------------------------------------------------------------------------------	
 	
 	 public void addWinner(Player player) throws ClassNotFoundException, IOException{
 		 if(root == null){
