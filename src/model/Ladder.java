@@ -1,7 +1,10 @@
 package model;
 
-public class Ladder {
-	
+import java.io.Serializable;
+
+public class Ladder implements Serializable {
+
+	private static final long serialVersionUID = -2686535498367370184L;
 	private int id;
 	private Node begin;
 	private Node end;

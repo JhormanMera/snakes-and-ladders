@@ -1,7 +1,10 @@
 package model;
 
-public class Snake {
-	
+import java.io.Serializable;
+
+public class Snake implements Serializable {
+
+	private static final long serialVersionUID = -3881140176055075259L;
 	private char letter;
 	private Node begin;
 	private Node end;	

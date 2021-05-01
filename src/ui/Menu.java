@@ -60,7 +60,7 @@ public class Menu {
 	public void gameSimulation() {
 		if (game.getContPlaying()==false) {
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
