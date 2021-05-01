@@ -1,7 +1,10 @@
 package model;
 
-public class Node {
+import java.io.Serializable;
+
+public class Node implements Serializable{
 	
+	private static final long serialVersionUID = -5981999493219417414L;
 	private Node up;
 	private Node down;
 	private Node pre;
@@ -72,9 +75,9 @@ public class Node {
 	public String toString(){
 		if(id<10&&ladder==null&&snake==null) {
 			return "[ "+id+" ]";
-		}else if(id<10&&ladder!=null) {
+		}else if(ladder!=null) {
 			return "["+id+ladder.getId()+"]";
-		}else if(id<10&&snake!=null) {
+		}else if(snake!=null) {
 			return "["+id+snake.getLetter()+"]";
 		}else {
 			return "["+id+" ]";
@@ -83,7 +86,11 @@ public class Node {
 	}
 	
 	public String container() {
-		if(ladder!=null && list!=null) {
+		if(ladder!=null) {
+			return "["+ladder.getId()+"  ]";
+		}else if(snake!=null) {
+			return "["+snake.getLetter()+"  ]";
+		}else if(ladder!=null && list!=null) {
 			return "["+ladder.getId()+list.getPartner(list, list.getSymbol()+"")+" ]";
 		}else if(snake!=null && list!=null) {
 			return "["+snake.getLetter()+list.getPartner(list, list.getSymbol()+"")+" ]";

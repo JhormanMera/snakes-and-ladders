@@ -40,6 +40,7 @@ public class SnakesAndLadders {
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(INFORMATION_PATH_FILE));
 		oos.writeObject(root);
 		oos.close();
+		loadData();
 	}
 	
 	//@SuppressWarnings("unchecked") 
@@ -295,21 +296,27 @@ public class SnakesAndLadders {
   
 	
 	public Node searchNode(int id) {
-		return searchNode(first, id);
+		return searchFirstNode(first, id);
+	}
+	private Node searchFirstNode(Node node, int id) {
+		if (node.getDown() != null) {
+			return searchFirstNode(node.getDown(),id);
+		}else {
+			return searchNode(node,id);
+		}
 	}
 	private Node searchNode(Node node, int id) {
-		if (node.getDown() != null) {
-			return searchNode(node.getDown(),id);
-		} else if (node.getPost() != null && node.getId()<id) {
+		if (node.getPost() != null && node.getId()<id &&node.getId()<node.getPost().getId()) {
 			return searchNode(node.getPost(),id);
-		} else if (node.getUp() != null && node.getId()<id) {
-			return searchNode(node.getUp(),id);
-		}else if (node.getPre() != null && node.getId()<id) {
+		}else if (node.getPre() != null && node.getId()<id&&node.getId()<node.getPre().getId()) {
 			return searchNode(node.getPre(),id);
+		} else if (node.getUp() != null&&(node.getPost()==null||node.getPre()==null)&& node.getId()<id) {
+			return searchNode(node.getUp(),id);
 		} else {
 			return node;
 		}
 	}
+	
 	
 //-----------------------------------------------DICE AND PLAYER MOVES------------------------------------------------------------------------------------------------------------------------------
 	public void calculateScoreWinner() {
@@ -317,25 +324,46 @@ public class SnakesAndLadders {
 	}
 	public String generateDice(){
 		String msg="";
-		int dice = (int) Math.floor(Math.random()*(7)); 
-		if(temp.getCurrent().getId()+dice<=(colsAmount*rowsAmount)) {
+		int dice = (int) Math.floor(Math.random()*(6));
+		dice +=1;
+		if((temp.getCurrent().getId()+dice)<(colsAmount*rowsAmount)) {
 			temp.setMoves(temp.getMoves()+1);
 			removePlayerNode(temp.getCurrent(), temp);
 			addPlayerInNode(searchNode(temp.getCurrent().getId()+dice),temp);
 			temp.setCurrent(searchNode(temp.getCurrent().getId()+dice));
-			msg="The player "+temp.getPostPlayer().getSymbol()+" has rolled de dice and obtained a score of "+dice;
+			msg="The player "+temp.getSymbol()+" has rolled de dice and obtained a score of "+dice;
+			if(temp.getCurrent().getSnake()!=null) {
+				if(temp.getCurrent().getSnake().getBegin().equals(temp.getCurrent())) {
+					removePlayerNode(temp.getCurrent(), temp);
+					addPlayerInNode(temp.getCurrent().getSnake().getEnd(),temp);
+					temp.setCurrent(temp.getCurrent().getSnake().getEnd());
+					msg+="\n"+"----The player "+temp.getSymbol()+" fell into a snake and was move to the node "+temp.getCurrent().getId()+"----";
+				}
+			}else if(temp.getCurrent().getLadder()!=null) {
+				if(temp.getCurrent().getLadder().getBegin().equals(temp.getCurrent())) {
+					removePlayerNode(temp.getCurrent(), temp);
+					addPlayerInNode(temp.getCurrent().getLadder().getEnd(),temp);
+					temp.setCurrent(temp.getCurrent().getLadder().getEnd());
+					msg+="\n"+"----The player "+temp.getSymbol()+" climbed up a ladder to the node "+temp.getCurrent().getId()+"----";
+				}
+			}
+			
 			if(temp.getCurrent().getId()+dice<(colsAmount*rowsAmount)) {
 				changeActual();
 			}
-		}else if(temp.getCurrent().getId()+dice==(colsAmount*rowsAmount)) {
-				contPlaying=true;
-		}else {
-			generateDice();
+		}else if((temp.getCurrent().getId()+dice)==(colsAmount*rowsAmount)) {
+			temp.setMoves(temp.getMoves()+1);
+			removePlayerNode(temp.getCurrent(), temp);
+			addPlayerInNode(searchNode(temp.getCurrent().getId()+dice),temp);
+			temp.setCurrent(searchNode(temp.getCurrent().getId()+dice));
+			msg="The player "+temp.getSymbol()+" has rolled de dice and obtained a score of "+dice;
+			contPlaying=true;
 		}
 		return msg;
 	}
-	
+
 	public void addPlayerInNode(Node node,Player player) {
+		player.setPostInNode(null);
 		if(node.getList()==null) {
 			node.setList(player);
 		}else {
@@ -352,20 +380,15 @@ public class SnakesAndLadders {
     }
 	
 	public void removePlayerNode(Node node, Player player) {
-		if(node.getList()==player) {
+		if(node.getList()==player&&node.getList().getPostInNode()==null) {
 			node.setList(null);
+		}else if(node.getList()==player&&node.getList().getPostInNode()!=null) {
+			node.setList(player.getPostInNode());
 		}else {
-			removePlayerInNode(node.getList(),player);
+			node.getList().removePlayerNode(player);
 		}
 	}
 	
-	private void removePlayerInNode(Player player, Player rmvPlayer) {
-		if(player.getPostInNode()==rmvPlayer) {
-			player.setPostInNode(null);
-		}else {
-			removePlayerInNode(player.getPostInNode(),rmvPlayer);
-		}
-	}
 	
 	public void changeActual() {
         if (temp.getPostPlayer() != null) {
@@ -388,13 +411,13 @@ public class SnakesAndLadders {
 	}
 
 	private void setHead(Snake newSnake){
-		int range = ((rowsAmount*colsAmount)-1)+1;
-		int position = (int) Math.floor(Math.random()*range+1); 
+		int range = rowsAmount*colsAmount;
+		int position = (int) Math.floor(Math.random()*range); 
+		position++;
 		if(searchNode(position).getLadder()==null&&
 				searchNode(position).getSnake()==null&&
-				position!=(rowsAmount*colsAmount)&&
+				position<(rowsAmount*colsAmount)&&
 				position>colsAmount) {
-
 			searchNode(position).setSnake(newSnake);
 			newSnake.setBegin(searchNode(position));
 		}else {
@@ -404,8 +427,9 @@ public class SnakesAndLadders {
 	}
 
 	private void setTail(Snake newSnake){
-		int range = ((rowsAmount*colsAmount)-1)+1;
-		int position = (int) Math.floor(Math.random()*range+1); 
+		int range = rowsAmount*colsAmount;
+		int position = (int) Math.floor(Math.random()*range); 
+		position++;
 		if(searchNode(position).getLadder()==null&&
 				searchNode(position).getSnake()==null&&
 				position<newSnake.getBegin().getId()-colsAmount) {
@@ -430,8 +454,9 @@ public class SnakesAndLadders {
 	 }
 
 	 private void setBase(Ladder newLadder){
-		 int range = ((rowsAmount*colsAmount)-1)+1;
-		 int position = (int) Math.floor(Math.random()*range+1);
+		 int range = rowsAmount*colsAmount;
+		 int position = (int) Math.floor(Math.random()*range);
+		 position++;
 		 if(searchNode(position).getLadder()==null&&
 				 searchNode(position).getSnake()==null&&
 				 position>1&&
@@ -444,8 +469,9 @@ public class SnakesAndLadders {
 	 }
 
 	 private void setTop(Ladder newLadder){
-		 int range = ((rowsAmount*colsAmount)-1)+1;
-		 int position = (int) Math.floor(Math.random()*range+1);
+		 int range = rowsAmount*colsAmount;
+		 int position = (int) Math.floor(Math.random()*range);
+		 position++;
 		 if(searchNode(position).getLadder()==null&&
 				 searchNode(position).getSnake()==null&&
 				 position>(newLadder.getBegin().getId()+colsAmount)) {
@@ -522,80 +548,18 @@ public class SnakesAndLadders {
 		 }
 	 }
 
-	 public Player searchWinner(int score){
-		 return searchWinner(root, score);
-	 }
-
-	 private Player searchWinner(Player current, int score){
-		 if(current == null || current.getScore() == score){
-			 return current;
-		 }else if(current.getScore() < score){
-			 return searchWinner(current.getRight(), score);
-		 }else{
-			 return searchWinner(current.getLeft(), score);
-		 }
-	 }
-
-	 public void removeWinner(int score){
-		 Player rmvWinner = searchWinner(score);
-		 removeWinner(rmvWinner);
-	 }
-
-	 private void removeWinner(Player rmvWinner){
-		 if(rmvWinner!=null){
-			 if(rmvWinner.getLeft()==null && rmvWinner.getRight()==null){ //Case 1
-				 if(rmvWinner == root){
-					 root = null;
-				 }else if(rmvWinner.getParent().getLeft() == rmvWinner){
-					 rmvWinner.getParent().setLeft(null);
-				 }else{
-					 rmvWinner.getParent().setRight(null);
-				 }
-				 rmvWinner.setParent(null);
-			 }else if(rmvWinner.getLeft()==null || rmvWinner.getRight()==null){ //Case 2
-				 Player onlySon;
-				 if(rmvWinner.getLeft()!=null){
-					 onlySon = rmvWinner.getLeft();
-				 }else{
-					 onlySon = rmvWinner.getRight();
-				 }
-				 onlySon.setParent(rmvWinner.getParent());
-				 if(rmvWinner == root){
-					 root = onlySon;
-				 }else if(rmvWinner.getParent().getLeft() == rmvWinner){
-					 rmvWinner.getParent().setLeft(onlySon);
-				 }else{
-					 rmvWinner.getParent().setRight(onlySon);
-				 }
-			 }else{ //Case 3
-				 Player successor = min(rmvWinner.getRight());
-				 rmvWinner.setScore(successor.getScore());
-				 rmvWinner.setMoves(successor.getMoves());
-				 rmvWinner.setSymbol(successor.getSymbol());
-				 rmvWinner.setNickName(successor.getNickName());
-				 removeWinner(successor);
-			 }
-		 }
-	 }
-
-	 private Player min(Player current){
-		 if(current.getLeft()==null){
-			 return current;
-		 }else{
-			 return min(current.getLeft());
-		 }
-	 }
-
 	 public void printWinners(){
 		 printWinners(root);
 	 }
 
 	 private void printWinners(Player player){
-		 if(player == null) {
-			 System.out.println("There aren't winners yet"+"\n");             
+		 if(root==null) {
+			 System.out.println("There aren't winners yet"+"\n");
+		 }else if(player == null) {
+			 
 		 }else {
 			 printWinners(player.getLeft());
-			 System.out.println(player.toString());
+			 System.out.println(player.toString()+"\n");
 			 printWinners(player.getRight());
 		 }
 	 }

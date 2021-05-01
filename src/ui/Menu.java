@@ -16,28 +16,27 @@ public class Menu {
 		game = new SnakesAndLadders();
 	}
 
-	public void initializeGame(boolean render) {
-		game.setVisibility(false);
-		if (render == false) {
+	public void initializeGame() {
+		if (game.getContPlaying() == false) {
 			System.out.println("Press enter to continue");
 			String jump = sc.nextLine();
 			if (jump.equals("")) {
 				System.out.println(game.generateDice());
 				System.out.println(game);
-				initializeGame(game.getContPlaying());
+				initializeGame();
 			} else if (jump.equals("simul")) {
 				System.out.println("Simulation mode has started");
 				gameSimulation();
 			} else if (jump.equals("menu")) {
-				System.out.println("Back to the main menu");
+				System.out.println("Back to the main menu"+"\n");
 				return;
 			} else if (jump.equals("num")) {
 				game.setVisibility(true);
 				System.out.println(game);
-				initializeGame(render);
+				initializeGame();
 			} else {
 				System.out.println("You must enter a valid option");
-				initializeGame(render);
+				initializeGame();
 			}
 		} else {
 			System.out.println("The player "+game.getTemp().getSymbol()+" has won the game");
@@ -65,10 +64,11 @@ public class Menu {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			game.generateDice();
+			System.out.println(game.generateDice());
 			System.out.println(game);
 			gameSimulation();
 		} else {
+			System.out.println("The player "+game.getTemp().getSymbol()+" has won the game");
 			calculateWinner();
 		}
 	}
@@ -96,8 +96,8 @@ public class Menu {
 		game.createGameBoard(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
 		int snakes = Integer.parseInt(parts[2]);
 		int ladders = Integer.parseInt(parts[3]);
-		//game.setSnakes(snakes, 0);
-		//game.setLadders(ladders, 0);
+		game.setSnakes(snakes, 0);
+		game.setLadders(ladders, 0);
 		try {
 			int a = Integer.parseInt(parts[4]);
 			game.setPlayersAmount(a);
@@ -107,7 +107,9 @@ public class Menu {
 			game.assignPlayers(0,parts[4]);
 		}
 		System.out.println(game);
-		initializeGame(false);
+		game.setVisibility(false);
+		System.out.println(game);
+		initializeGame();
 	}
 
 	public void doOperation(int option) {

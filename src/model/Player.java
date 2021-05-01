@@ -99,7 +99,7 @@ public class Player implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Player : "+nickName+" Symbol "+symbol+" Score: "+score;
+		return "Player: "+nickName+"\n"+"Symbol: "+symbol+"\n"+"Score: "+score;
 	}
 	
 	public String getPartner(Player first, String msg) {
@@ -130,7 +130,19 @@ public class Player implements Serializable {
 	public void setPostInNode(Player postInNode) {
 		this.postInNode = postInNode;
 	}
-
+	public boolean removePlayerNode(Player player) {
+		boolean rmv =false;
+		if(postInNode==player&&postInNode.getPostInNode()!=null) {
+			postInNode=postInNode.getPostInNode();
+			rmv=true;
+		}else if(postInNode==player&&postInNode.getPostInNode()==null) {
+			postInNode=null;
+			rmv=true;
+		}else if(postInNode!=player&&postInNode.getPostInNode()!=null) {
+			removePlayerNode(postInNode.getPostInNode());
+		}
+		return rmv;
+	}
 	
 
 }
