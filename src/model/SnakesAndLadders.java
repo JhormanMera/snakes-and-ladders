@@ -195,6 +195,11 @@ public class SnakesAndLadders {
 	}  
 	
 //-------------------------------------------GAME ITEMS--------------------------------------------------------------
+	
+	public Player getTemp() {
+		return temp;
+	}
+
 	public Node getFirst() {
 		return first;
 	}
@@ -289,34 +294,41 @@ public class SnakesAndLadders {
 //----------------------------------------------------NODE--------------------------------------------------------------------
   
 	
-	public Node searchNode(int id){
+	public Node searchNode(int id) {
 		return searchNode(first, id);
 	}
-
-	private Node searchNode(Node current, int id){
-		if(current.getPost()!=null && current.getId()<id){
-			return searchNode(current.getPost(),id);
-		}else if(current.getPost()==null && current.getUp()!=null && current.getId()<id) {
-			return searchNode(current.getUp(),id);
-		}else{
-			return current;
+	private Node searchNode(Node node, int id) {
+		if (node.getDown() != null) {
+			return searchNode(node.getDown(),id);
+		} else if (node.getPost() != null && node.getId()<id) {
+			return searchNode(node.getPost(),id);
+		} else if (node.getUp() != null && node.getId()<id) {
+			return searchNode(node.getUp(),id);
+		}else if (node.getPre() != null && node.getId()<id) {
+			return searchNode(node.getPre(),id);
+		} else {
+			return node;
 		}
 	}
 	
 //-----------------------------------------------DICE AND PLAYER MOVES------------------------------------------------------------------------------------------------------------------------------
-	
+	public void calculateScoreWinner() {
+		temp.setScore(temp.getMoves()*(colsAmount*rowsAmount));
+	}
 	public String generateDice(){
 		String msg="";
-		int dice = (int) Math.floor(Math.random()*(6)+1); 
+		int dice = (int) Math.floor(Math.random()*(7)); 
 		if(temp.getCurrent().getId()+dice<=(colsAmount*rowsAmount)) {
+			temp.setMoves(temp.getMoves()+1);
 			removePlayerNode(temp.getCurrent(), temp);
 			addPlayerInNode(searchNode(temp.getCurrent().getId()+dice),temp);
 			temp.setCurrent(searchNode(temp.getCurrent().getId()+dice));
 			msg="The player "+temp.getPostPlayer().getSymbol()+" has rolled de dice and obtained a score of "+dice;
-			if(temp.getCurrent().getId()+dice==(colsAmount*rowsAmount)) {
-				contPlaying=true;
+			if(temp.getCurrent().getId()+dice<(colsAmount*rowsAmount)) {
+				changeActual();
 			}
-			changeActual();
+		}else if(temp.getCurrent().getId()+dice==(colsAmount*rowsAmount)) {
+				contPlaying=true;
 		}else {
 			generateDice();
 		}
@@ -355,19 +367,11 @@ public class SnakesAndLadders {
 		}
 	}
 	
-	public String calculateWinner() {
-		String msg="";
-		return msg;
-	}
-	
-	
-	public Player changeActual() {
+	public void changeActual() {
         if (temp.getPostPlayer() != null) {
             temp=temp.getPostPlayer();
-            return temp;
         } else {
         	temp=one;
-            return temp;
         }
     }
 

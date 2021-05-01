@@ -1,6 +1,7 @@
 package ui;
 
 
+import java.io.IOException;
 import java.util.Scanner;
 import model.SnakesAndLadders;
 
@@ -21,7 +22,7 @@ public class Menu {
 			System.out.println("Press enter to continue");
 			String jump = sc.nextLine();
 			if (jump.equals("")) {
-				//System.out.println(game.generateDice());
+				System.out.println(game.generateDice());
 				System.out.println(game);
 				initializeGame(game.getContPlaying());
 			} else if (jump.equals("simul")) {
@@ -39,10 +40,24 @@ public class Menu {
 				initializeGame(render);
 			}
 		} else {
-			System.out.println(game.calculateWinner());
+			System.out.println("The player "+game.getTemp().getSymbol()+" has won the game");
+			calculateWinner();
 		}
 	}
 	
+	private void calculateWinner() {
+		System.out.println("Enter a NickName");
+		game.getTemp().setNickName(sc.nextLine());
+		game.calculateScoreWinner();
+		try {
+			game.addWinner(game.getTemp());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void gameSimulation() {
 		if (game.getContPlaying()==false) {
 			try {
@@ -54,7 +69,7 @@ public class Menu {
 			System.out.println(game);
 			gameSimulation();
 		} else {
-			game.calculateWinner();
+			calculateWinner();
 		}
 	}
 	
@@ -79,6 +94,10 @@ public class Menu {
 		String[] parts = parametros.split(SPACE);
 		game.setOne(null);
 		game.createGameBoard(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]));
+		int snakes = Integer.parseInt(parts[2]);
+		int ladders = Integer.parseInt(parts[3]);
+		//game.setSnakes(snakes, 0);
+		//game.setLadders(ladders, 0);
 		try {
 			int a = Integer.parseInt(parts[4]);
 			game.setPlayersAmount(a);
