@@ -11,14 +11,13 @@ public class Node {
 	private int row;
 	private int col;
 	private int id;
-	private String playersID;
+	private Player list;
 
 	
 	public Node(int row, int col) {
 		this.row = row;
 		this.col = col;
 		this.id=0;
-		playersID=" ";
 	}
 
 	public Node getUp() {
@@ -84,21 +83,15 @@ public class Node {
 	}
 	
 	public String container() {
-		if(ladder!=null) {
-			return "["+ladder.getId()+playersID+" ]";
-		}else if(snake!=null) {
-			return "["+snake.getLetter()+playersID+" ]";
+		if(ladder!=null && list!=null) {
+			return "["+ladder.getId()+list.getPartner(list, list.getSymbol()+"")+" ]";
+		}else if(snake!=null && list!=null) {
+			return "["+snake.getLetter()+list.getPartner(list, list.getSymbol()+"")+" ]";
+		}else if(list!=null){
+			return "[ "+list.getPartner(list, list.getSymbol()+"")+" ]";
 		}else {
-			return "[ "+playersID+" ]";
+			return "[   ]";
 		}
-	}
-
-	public String getPlayersID() {
-		return playersID;
-	}
-
-	public void setPlayersID(String playersID) {
-		this.playersID = playersID;
 	}
 
 	public int getId() {
@@ -123,5 +116,15 @@ public class Node {
 
 	public void setSnake(Snake snake) {
 		this.snake = snake;
-	} 
+	}
+	
+	public Player getList() {
+		return list;
+	}
+
+	public void setList(Player list) {
+		this.list = list;
+	}
+	
+
 }

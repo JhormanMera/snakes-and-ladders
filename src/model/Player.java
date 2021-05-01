@@ -11,6 +11,8 @@ public class Player implements Serializable {
 	private Player left;
 	private Player prePlayer;
 	private Player postPlayer;
+	private Player postInNode;
+	private Node current;
 	private String nickName;
 	private char symbol;
 	private int moves;
@@ -98,6 +100,35 @@ public class Player implements Serializable {
 	@Override
 	public String toString() {
 		return "Player : "+nickName+" Symbol "+symbol+" Score: "+score;
+	}
+	
+	public String getPartner(Player first, String msg) {
+        if (first.getPostInNode() != null) {
+            msg += ""+ first.getPostInNode().getSymbol();
+            return getPartner(first.getPostInNode(), msg);
+        } else {
+            return msg;
+        }
+    }
+
+
+	public Node getCurrent() {
+		return current;
+	}
+
+
+	public void setCurrent(Node current) {
+		this.current = current;
+	}
+
+
+	public Player getPostInNode() {
+		return postInNode;
+	}
+
+
+	public void setPostInNode(Player postInNode) {
+		this.postInNode = postInNode;
 	}
 
 	

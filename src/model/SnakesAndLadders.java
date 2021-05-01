@@ -15,8 +15,10 @@ public class SnakesAndLadders {
 	private Node first;
 	private Player root;
 	private Player one;
+	private Player temp;
 	private int rowsAmount;
 	private int colsAmount;
+	private int playersAmount;
 	private boolean visibility;
 	private boolean contPlaying;
 	
@@ -253,12 +255,22 @@ public class SnakesAndLadders {
 		this.contPlaying = contPlaying;
 	}
 	
+	public int getPlayersAmount() {
+		return playersAmount;
+	}
+
+	public void setPlayersAmount(int playersAmount) {
+		this.playersAmount = playersAmount;
+	}
+	
 //-----------------------------------------PLAYERS-----------------------------------------------------------------------
 	
 	public void generatePlayers(int start,int num) {
 		if(start<num) {
 			char a = SYMBOLS.charAt(start);
 			Player newPlayer = new Player(a);
+			newPlayer.setCurrent(searchNode(1));
+			addPlayerInNode(searchNode(1),newPlayer);
 			addPlayer(newPlayer);
 			generatePlayers(start+1,num);
 		}
@@ -266,7 +278,9 @@ public class SnakesAndLadders {
 
 	public void assignPlayers(int start,String sym) {
 		if (sym.length()<=SYMBOLS.length()&&start<sym.length()) {
-			Player newPlayer = new Player(sym.charAt(start));	
+			Player newPlayer = new Player(sym.charAt(start));
+			newPlayer.setCurrent(searchNode(1));
+			addPlayerInNode(searchNode(1),newPlayer);
 			addPlayer(newPlayer);
 			assignPlayers(start+1,sym);
 		}
@@ -291,9 +305,54 @@ public class SnakesAndLadders {
 	
 //-----------------------------------------------DICE AND PLAYER MOVES------------------------------------------------------------------------------------------------------------------------------
 	
-	public int generateDice(){
-		int dice = (int) Math.floor(Math.random()*(6-1+1)+1); 
-		return dice;
+	public String generateDice(){
+		String msg="";
+		int dice = (int) Math.floor(Math.random()*(6)+1); 
+		if(temp.getCurrent().getId()+dice<=(colsAmount*rowsAmount)) {
+			removePlayerNode(temp.getCurrent(), temp);
+			addPlayerInNode(searchNode(temp.getCurrent().getId()+dice),temp);
+			temp.setCurrent(searchNode(temp.getCurrent().getId()+dice));
+			msg="The player "+temp.getPostPlayer().getSymbol()+" has rolled de dice and obtained a score of "+dice;
+			if(temp.getCurrent().getId()+dice==(colsAmount*rowsAmount)) {
+				contPlaying=true;
+			}
+			changeActual();
+		}else {
+			generateDice();
+		}
+		return msg;
+	}
+	
+	public void addPlayerInNode(Node node,Player player) {
+		if(node.getList()==null) {
+			node.setList(player);
+		}else {
+			setInBox(player,node.getList());
+		}
+	}
+	
+	private void setInBox(Player player, Player firstPlayer) {
+        if (firstPlayer.getPostInNode() != null) {
+            setInBox(player, firstPlayer.getPostInNode());
+        } else {
+            firstPlayer.setPostInNode(player);
+        }
+    }
+	
+	public void removePlayerNode(Node node, Player player) {
+		if(node.getList()==player) {
+			node.setList(null);
+		}else {
+			removePlayerInNode(node.getList(),player);
+		}
+	}
+	
+	private void removePlayerInNode(Player player, Player rmvPlayer) {
+		if(player.getPostInNode()==rmvPlayer) {
+			player.setPostInNode(null);
+		}else {
+			removePlayerInNode(player.getPostInNode(),rmvPlayer);
+		}
 	}
 	
 	public String calculateWinner() {
@@ -301,9 +360,17 @@ public class SnakesAndLadders {
 		return msg;
 	}
 	
-	public void playerMove(Player player,int dice) {
+	
+	public Player changeActual() {
+        if (temp.getPostPlayer() != null) {
+            temp=temp.getPostPlayer();
+            return temp;
+        } else {
+        	temp=one;
+            return temp;
+        }
+    }
 
-	}
 	
 //-----------------------------------------------SNAKES--------------------------------------------------------------------------------------------------------------------
 	
@@ -390,10 +457,12 @@ public class SnakesAndLadders {
 	 public void addPlayer(Player player){
 		 if(one == null){
 			 one = player;
+			 temp = player;
 		 }else{
 			 addPlayer(one, player);
 		 }
 	 }
+
 
 	 private void addPlayer(Player current, Player newPlayer){
 		 if(current.getPostPlayer() == null){
@@ -403,6 +472,7 @@ public class SnakesAndLadders {
 			 addPlayer(current.getPostPlayer(), newPlayer);
 		 }
 	 }
+		
 
 	 public Player searchPlayer(char simbol){
 		 return searchPlayer(one, simbol);
