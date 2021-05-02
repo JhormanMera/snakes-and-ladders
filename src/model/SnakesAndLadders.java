@@ -129,10 +129,9 @@ public class SnakesAndLadders {
 	}
 
 	/** 
-	* The id are put to each of the nodes of the matrix <br>
+	* Recursively call the 'matrixFirstRow' method <br>
 	* <b> pre: The complete game board must have been created before </b> 
-	* @param i type int
-	* @return Return the initial content of the game board inside a String
+	* @param firstNode type Node
 	*/	
 	public void matrixEnum(Node firstNode) {
 		matrixFirstRow(firstNode);
@@ -153,6 +152,12 @@ public class SnakesAndLadders {
 		}
 	}
 
+	/** 
+	* Assign the id to the nodes that go to the right, and also recursively call the 'matrixLeftRow' method in order to assign the the id to the nodes that go to the left <br>
+	* <b> pre: The complete game board must have been created before </b> 
+	* <b> post: Assigns the id to the nodes that go to the right and assigns the id to the nodes that go to the left by the recursive call </b>
+	* @param rightRow type Node
+	*/	
 	public void matrixRightRow(Node rightRow) {
 		if (rightRow.getPost() != null) {
 			rightRow.getPost().setId(rightRow.getId() + 1);
@@ -163,6 +168,12 @@ public class SnakesAndLadders {
 		}
 	}
 
+	/** 
+	* Assign the id to the nodes that go to the left, and also recursively call the 'matrixRightRow' method in order to assign the the id to the nodes that go to the right <br>
+	* <b> pre: The complete game board must have been created before </b> 
+	* <b> post: Assigns the id to the nodes that go to the left and assigns the id to the nodes that go to the right by the recursive call </b>
+	* @param leftRow type Node
+	*/
 	public void matrixLeftRow(Node leftRow) {
 		if (leftRow.getPre() != null) {
 			leftRow.getPre().setId(leftRow.getId() + 1);
@@ -173,6 +184,13 @@ public class SnakesAndLadders {
 		}
 	}
 
+	/** 
+    * Prints the rows from top to bottom, and makes a recursive call to the 'printCol' method which prints the columns from left to right <b> 
+    * <b> pre: The complete game board must have been created before </b> 
+	* <b> post: Prints the rows from top to bottom, and print the columns from left to right with recursive call </b>
+	* @param firstRow type Node
+	* @return the content of the array (rows and columns) within a string
+	*/
 	public String printRow(Node firstRow){
 		String msg = "";
 		if(firstRow != null){
@@ -182,6 +200,13 @@ public class SnakesAndLadders {
 		return msg;
 	}
 
+	/** 
+	 * Prints the columns from left to right, and makes a recursive call to the 'printRow' method which prints the rows from top to bottom <b> 
+	 * <b> pre: The complete game board must have been created before </b> 
+	 * <b> post: Prints the columns from left to right, and print the rows from top to bottom with recursive call </b>
+	 * @param current type Node
+	 * @return the content of the array (columns and rows) within a string
+	 */
 	public String printCol(Node current){
 		String msg = "";
 		if(current != null) {
@@ -269,8 +294,48 @@ public class SnakesAndLadders {
 		this.playersAmount = playersAmount;
 	}
 	
+	//--------------------------------------------LINKED LIST------------------------------------------------------------------------
+	
+	/** 
+	 * Adds the first player to the linked list and makes the recursive call of the 'addPlayer' method which adds the other players <b> 
+	 * <b> pre: the player that is passed as a parameter must be !null </b> 
+	 * <b> post: adds the first player to the linked list and adds the other player with recursive call </b>
+	 * @param player type Player
+	 */
+		 public void addPlayer(Player player){
+			 if(one == null){
+				 one = player;
+				 temp = player;
+			 }else{
+				 addPlayer(one, player);
+			 }
+		 }
+
+	 /** 
+	 * Adds the players from number 2 to number n and makes a recursive call to it <b> 
+	 * <b> pre: the newPlayer that is passed as a parameter must be !null </b> 
+	 * <b> post: Adds the players from number 2 to number n  </b>
+	 * @param current type Player
+	 * @param newPlayer type Player 
+	 */
+		 private void addPlayer(Player current, Player newPlayer){
+			 if(current.getPostPlayer() == null){
+				 current.setPostPlayer(newPlayer);
+				 newPlayer.setPrePlayer(current);
+			 } else{
+				 addPlayer(current.getPostPlayer(), newPlayer);
+			 }
+		 }
+
 //-----------------------------------------PLAYERS-----------------------------------------------------------------------
 	
+	/** 
+	 * It generates the players with their respectively preset symbols internally in the program and recursively calls the 'addPlayer' and 'addPlayerInNode' methods. <b> 
+	 * <b> pre: the players number can't be zero </b> 
+	 * <b> post: It generates the players with their respectively preset symbols internally in the program </b>
+	 * @param start type int
+	 * @param num type int 
+	 */
 	public void generatePlayers(int start,int num) {
 		if(start<num) {
 			char a = SYMBOLS.charAt(start);
@@ -282,6 +347,15 @@ public class SnakesAndLadders {
 		}
 	}
 
+	/** 
+	 * The user chooses the symbols that each player will have and recursively calls the 'addPlayer' and 'addPlayerInNode' methods <b> 
+	 * <b> pre: the players number can't be zero </b> 
+	 * <b> pre: the symbols entered by the user must be those preset by the game </b>
+	 * <b> pre: the symbols amount must be <= to the number of symbols allowed by the program </b>
+	 * <b> post: The user chooses the symbols that each player will have </b>
+	 * @param start type int
+	 * @param sym type String
+	 */
 	public void assignPlayers(int start,String sym) {
 		if (sym.length()<=SYMBOLS.length()&&start<sym.length()) {
 			Player newPlayer = new Player(sym.charAt(start));
@@ -294,10 +368,25 @@ public class SnakesAndLadders {
 	
 //----------------------------------------------------NODE--------------------------------------------------------------------
   
-	
+	/** 
+	 * Search for the node with the id that is passed to it by parameter and recursively call the 'searchFirstNode' method <b> 
+	 * <b> pre: nodes must have been created before </b> 
+	 * <b> pre: the id that is passed by parameter must be> = 1 </b>
+	 * <b> post: Search for the node with the id that is passed to it by parameter </b>
+	 * @param id type int
+	 */
 	public Node searchNode(int id) {
 		return searchFirstNode(first, id);
 	}
+
+	/** 
+	 * Search the initial node and recursively call the 'searchNode' method <b> 
+	 * <b> pre: nodes must have already been created before </b> 
+	 * <b> pre: the id that is passed by parameter must be> = 1 </b>
+	 * <b> post: Search for the node with the id that is passed to it by parameter </b>
+	 * @param id type int
+	 * @return the first node 
+	 */
 	private Node searchFirstNode(Node node, int id) {
 		if (node.getDown() != null) {
 			return searchFirstNode(node.getDown(),id);
@@ -305,6 +394,8 @@ public class SnakesAndLadders {
 			return searchNode(node,id);
 		}
 	}
+	
+	
 	private Node searchNode(Node node, int id) {
 		if (node.getPost() != null && node.getId()<id &&node.getId()<node.getPost().getId()) {
 			return searchNode(node.getPost(),id);
@@ -322,6 +413,7 @@ public class SnakesAndLadders {
 	public void calculateScoreWinner() {
 		temp.setScore(temp.getMoves()*(colsAmount*rowsAmount));
 	}
+	
 	public String generateDice(){
 		String msg="";
 		int dice = (int) Math.floor(Math.random()*(6));
@@ -479,40 +571,6 @@ public class SnakesAndLadders {
 			 searchNode(position).setLadder(newLadder);
 		 }else {
 			 setTop(newLadder);
-		 }
-	 }
-
-//--------------------------------------------LINKED LIST------------------------------------------------------------------------
-	
-	 public void addPlayer(Player player){
-		 if(one == null){
-			 one = player;
-			 temp = player;
-		 }else{
-			 addPlayer(one, player);
-		 }
-	 }
-
-
-	 private void addPlayer(Player current, Player newPlayer){
-		 if(current.getPostPlayer() == null){
-			 current.setPostPlayer(newPlayer);
-			 newPlayer.setPrePlayer(current);
-		 } else{
-			 addPlayer(current.getPostPlayer(), newPlayer);
-		 }
-	 }
-		
-
-	 public Player searchPlayer(char simbol){
-		 return searchPlayer(one, simbol);
-	 }
-
-	 private Player searchPlayer(Player current, char simbol){
-		 if(current == null || current.getSymbol() == simbol){
-			 return current;
-		 }else{
-			 return searchPlayer(current.getPostPlayer(), simbol);
 		 }
 	 }
 
