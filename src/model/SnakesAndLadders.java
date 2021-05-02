@@ -220,7 +220,7 @@ public class SnakesAndLadders {
 		return msg;
 	}  
 	
-//-------------------------------------------GAME ITEMS--------------------------------------------------------------
+//--------------------------------------------------GAME ITEMS--------------------------------------------------------------
 	
 	public Player getTemp() {
 		return temp;
@@ -327,7 +327,7 @@ public class SnakesAndLadders {
 			 }
 		 }
 
-//-----------------------------------------PLAYERS-----------------------------------------------------------------------
+//-------------------------------------------------PLAYERS-----------------------------------------------------------------------
 	
 	/** 
 	 * It generates the players with their respectively preset symbols internally in the program and recursively calls the 'addPlayer' and 'addPlayerInNode' methods. <b> 
@@ -374,6 +374,7 @@ public class SnakesAndLadders {
 	 * <b> pre: the id that is passed by parameter must be> = 1 </b>
 	 * <b> post: Search for the node with the id that is passed to it by parameter </b>
 	 * @param id type int
+	 * @return the node corresponding to the id entered
 	 */
 	public Node searchNode(int id) {
 		return searchFirstNode(first, id);
@@ -384,6 +385,7 @@ public class SnakesAndLadders {
 	 * <b> pre: nodes must have already been created before </b> 
 	 * <b> pre: the id that is passed by parameter must be> = 1 </b>
 	 * <b> post: Search for the node with the id that is passed to it by parameter </b>
+	 * @param node type Node
 	 * @param id type int
 	 * @return the first node 
 	 */
@@ -395,7 +397,15 @@ public class SnakesAndLadders {
 		}
 	}
 	
-	
+	/** 
+	 * Looks for the node by the id that is passed to it as a parameter and it is called recursively <b> 
+	 * <b> pre: nodes must have already been created before </b> 
+	 * <b> pre: the id that is passed by parameter must be> = 1 </b>
+	 * <b> post: Looks for the node by the id that is passed to it as a parameter </b>
+	 * @param node type Node
+	 * @param id type int
+	 * @return the node corresponding to the id entered
+	 */
 	private Node searchNode(Node node, int id) {
 		if (node.getPost() != null && node.getId()<id &&node.getId()<node.getPost().getId()) {
 			return searchNode(node.getPost(),id);
@@ -410,6 +420,16 @@ public class SnakesAndLadders {
 	
 	
 //-----------------------------------------------DICE AND PLAYER MOVES------------------------------------------------------------------------------------------------------------------------------
+	
+	/** 
+	 * Looks for the node by the id that is passed to it as a parameter and it is called recursively <b> 
+	 * <b> pre: nodes must have already been created before </b> 
+	 * <b> pre: the id that is passed by parameter must be> = 1 </b>
+	 * <b> post: Looks for the node by the id that is passed to it as a parameter </b>
+	 * @param node type Node
+	 * @param id type int
+	 * @return the node corresponding to the id entered
+	 */
 	public void calculateScoreWinner() {
 		temp.setScore(temp.getMoves()*(colsAmount*rowsAmount));
 	}
@@ -481,7 +501,11 @@ public class SnakesAndLadders {
 		}
 	}
 	
-	
+	/** 
+	 * Current player swaps position with next player <b> 
+	 * <b> pre: there must be at least two players: the current one and the next </b> 
+	 * <b> post: Current player swaps position with next player </b>
+	 */
 	public void changeActual() {
         if (temp.getPostPlayer() != null) {
             temp=temp.getPostPlayer();
@@ -490,7 +514,6 @@ public class SnakesAndLadders {
         }
     }
 
-	
 //-----------------------------------------------SNAKES--------------------------------------------------------------------------------------------------------------------
 	
 	public void setSnakes(int currentSnakes,int createdSnakes){
@@ -577,6 +600,12 @@ public class SnakesAndLadders {
 
 //-----------------------------------------BINARY SEARCH TREE---------------------------------------------------------------------------------------------	
 	
+	 /** 
+		 * Adds the first winner to the binary search tree and makes the recursive call of the 'addWinner' method which adds the other winners <b> 
+		 * <b> pre: the player that is passed as a parameter must be !null </b> 
+		 * <b> post: adds the first winner to the binary search tree and adds the other winner with recursive call </b>
+		 * @param player type Player
+		 */
 	 public void addWinner(Player player) throws ClassNotFoundException, IOException{
 		 if(root == null){
 			 root = player;
@@ -585,6 +614,7 @@ public class SnakesAndLadders {
 		 }
 		 saveData();
 	 }
+
 
 	 private void addWinner(Player current, Player newWinner) throws ClassNotFoundException, IOException{
 		 if(newWinner.getScore() <= current.getScore()){

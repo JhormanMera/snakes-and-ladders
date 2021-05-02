@@ -12,6 +12,7 @@ public class Menu {
 
 	private static final String SPACE =" ";
 	private SnakesAndLadders game;
+	
 	public Menu() {
 		game = new SnakesAndLadders();
 	}
@@ -73,6 +74,11 @@ public class Menu {
 		}
 	}
 	
+	/** 
+	* Main menu of the application<br>
+	* <b> pre: The user cant choose an option that's not on the menu</b> 
+	* <b> post: The user choose an option</b> 
+	*/	
 	public void showMenu() {
 		System.out.println("Welcome to Snakes And Ladders");
 		System.out.println("Choose an option");
@@ -112,6 +118,11 @@ public class Menu {
 		initializeGame();
 	}
 
+	/** 
+	*  Call the method that run the option chose by the user<br>
+	* <b> pre: The choice has to be an integer</b> 
+	* <b> post: </b> 
+	*/	
 	public void doOperation(int option) {
 		switch (option) {
 		case 1:
@@ -125,12 +136,22 @@ public class Menu {
 		}
 	}
 
+	/** 
+	*  Read and save an option that the user chose<br>
+	* <b> pre: The option has to be representated by an integer</b> 
+	* <b> post: Return the integer choice</b> 
+	*/
 	public int readOption() {
 		int option = sc.nextInt();
 		sc.nextLine();
 		return option;
 	}
 
+	/** 
+	*  Run the whole application<br>
+	* <b> pre: The option has to be an integer</b> 
+	* <b> post: Run the program</b> 
+	*/
 	public void startProgram() {
 		showMenu();
 		int option = readOption();
