@@ -374,7 +374,6 @@ public class SnakesAndLadders {
 	 * <b> pre: the id that is passed by parameter must be> = 1 </b>
 	 * <b> post: Search for the node with the id that is passed to it by parameter </b>
 	 * @param id type int
-	 * @return the node corresponding to the id entered
 	 */
 	public Node searchNode(int id) {
 		return searchFirstNode(first, id);
@@ -385,7 +384,6 @@ public class SnakesAndLadders {
 	 * <b> pre: nodes must have already been created before </b> 
 	 * <b> pre: the id that is passed by parameter must be> = 1 </b>
 	 * <b> post: Search for the node with the id that is passed to it by parameter </b>
-	 * @param node type Node
 	 * @param id type int
 	 * @return the first node 
 	 */
@@ -397,15 +395,7 @@ public class SnakesAndLadders {
 		}
 	}
 	
-	/** 
-	 * Looks for the node by the id that is passed to it as a parameter and it is called recursively <b> 
-	 * <b> pre: nodes must have already been created before </b> 
-	 * <b> pre: the id that is passed by parameter must be> = 1 </b>
-	 * <b> post: Looks for the node by the id that is passed to it as a parameter </b>
-	 * @param node type Node
-	 * @param id type int
-	 * @return the node corresponding to the id entered
-	 */
+	
 	private Node searchNode(Node node, int id) {
 		if (node.getPost() != null && node.getId()<id &&node.getId()<node.getPost().getId()) {
 			return searchNode(node.getPost(),id);
@@ -420,16 +410,6 @@ public class SnakesAndLadders {
 	
 	
 //-----------------------------------------------DICE AND PLAYER MOVES------------------------------------------------------------------------------------------------------------------------------
-	
-	/** 
-	 * Looks for the node by the id that is passed to it as a parameter and it is called recursively <b> 
-	 * <b> pre: nodes must have already been created before </b> 
-	 * <b> pre: the id that is passed by parameter must be> = 1 </b>
-	 * <b> post: Looks for the node by the id that is passed to it as a parameter </b>
-	 * @param node type Node
-	 * @param id type int
-	 * @return the node corresponding to the id entered
-	 */
 	public void calculateScoreWinner() {
 		temp.setScore(temp.getMoves()*(colsAmount*rowsAmount));
 	}
@@ -501,12 +481,7 @@ public class SnakesAndLadders {
 		}
 	}
 	
-	/** 
-	 * Looks for the node by the id that is passed to it as a parameter and it is called recursively <b> 
-	 * <b> pre: nodes must have already been created before </b> 
-	 * <b> pre: the id that is passed by parameter must be> = 1 </b>
-	 * <b> post: Looks for the node by the id that is passed to it as a parameter </b>
-	 */
+	
 	public void changeActual() {
         if (temp.getPostPlayer() != null) {
             temp=temp.getPostPlayer();
