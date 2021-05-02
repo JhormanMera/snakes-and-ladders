@@ -1,6 +1,4 @@
 package model;
-
-
 import java.io.Serializable;
 
 public class Player implements Serializable {
@@ -97,11 +95,22 @@ public class Player implements Serializable {
 	public void setPostPlayer(Player postPlayer) {
 		this.postPlayer = postPlayer;
 	}
+	
+	/** 
+	 *  Shows the player with his nickname, symbol and his score <br>
+	 * <b> pre: the player must have been created with their respective nickname, symbol and score </b> 
+	 * @return a string showing the player with his nickname, symbol and his score
+	 */
 	@Override
 	public String toString() {
 		return "Player: "+nickName+"\n"+"Symbol: "+symbol+"\n"+"Score: "+score;
 	}
 	
+	/** 
+	 *  Get player symbols on nodes <br>
+	 * <b> pre: players must have been created with their respective symbols </b> 
+	 * @return a string showing the player with his symbol
+	 */
 	public String getPartner(Player first, String msg) {
         if (first.getPostInNode() != null) {
             msg += ""+ first.getPostInNode().getSymbol();
@@ -130,6 +139,13 @@ public class Player implements Serializable {
 	public void setPostInNode(Player postInNode) {
 		this.postInNode = postInNode;
 	}
+	
+	/** 
+	 *  Remove the player from a specific node <br>
+	 * <b> pre: the player must have been created in a respective node </b>
+	 * @param player type Player 
+	 * @return a boolean true if player was removed
+	 */
 	public boolean removePlayerNode(Player player) {
 		boolean rmv =false;
 		if(postInNode==player&&postInNode.getPostInNode()!=null) {

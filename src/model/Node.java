@@ -71,6 +71,11 @@ public class Node implements Serializable{
 		this.col = col;
 	}
 	
+	/** 
+	 *  The content of the nodes is shown including the id that represents it <br>
+	 * <b> pre: the nodes must have been created with their respective id </b> 
+	 * @return a string showing the content of the nodes with the id that represents it
+	 */
 	@Override
 	public String toString(){
 		if(id<10&&ladder==null&&snake==null) {
@@ -85,6 +90,11 @@ public class Node implements Serializable{
 		
 	}
 	
+	/** 
+	 *  Shows the content of the nodes including the players <br>
+	 * <b> pre: the nodes must have been created  </b> 
+	 * @return a string showing the content of the nodes with the players into the node
+	 */
 	public String container() {
 		if(ladder!=null) {
 			return "["+ladder.getId()+"  ]";

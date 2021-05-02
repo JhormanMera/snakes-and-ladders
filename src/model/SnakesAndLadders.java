@@ -225,7 +225,7 @@ public class SnakesAndLadders {
 	/** 
 	 * Adds the first player to the linked list and makes the recursive call of the 'addPlayer' method which adds the other players <b> 
 	 * <b> pre: the player that is passed as a parameter must be !null </b> 
-	 * <b> post: adds the first player to the linked list and adds the other player with recursive call </b>
+	 * <b> post: the first player is added to the linked list </b>
 	 * @param player type Player
 	 */
 	public void addPlayer(Player player){
@@ -240,7 +240,7 @@ public class SnakesAndLadders {
 	/** 
 	 * Adds the players from number 2 to number n and makes a recursive call to it <b> 
 	 * <b> pre: the newPlayer that is passed as a parameter must be !null </b> 
-	 * <b> post: Adds the players from number 2 to number n  </b>
+	 * <b> post: players from numbers 2 to number n are added  </b>
 	 * @param current type Player
 	 * @param newPlayer type Player 
 	 */
@@ -258,7 +258,7 @@ public class SnakesAndLadders {
 	/** 
 	 * It generates the players with their respectively preset symbols internally in the program and recursively calls the 'addPlayer' and 'addPlayerInNode' methods. <b> 
 	 * <b> pre: the players number can't be zero </b> 
-	 * <b> post: It generates the players with their respectively preset symbols internally in the program </b>
+	 * <b> post: the players are generated with their respective symbols which are preset internally in the program </b>
 	 * @param start type int
 	 * @param num type int 
 	 */

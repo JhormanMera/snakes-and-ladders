@@ -1,5 +1,4 @@
 package model;
-
 import java.io.Serializable;
 
 public class Snake implements Serializable {
