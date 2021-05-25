@@ -389,9 +389,7 @@ public class SnakesAndLadders {
 					msg+="\n"+"----The player "+temp.getSymbol()+" climbed up a ladder to the node "+temp.getCurrent().getId()+"----";
 				}
 			}
-			if(temp.getCurrent().getId()+dice<(colsAmount*rowsAmount)) {
-				changeActual();
-			}
+			changeActual();
 		}else if((temp.getCurrent().getId()+dice)==(colsAmount*rowsAmount)) {
 			temp.setMoves(temp.getMoves()+1);
 			removePlayerNode(temp.getCurrent(), temp);
@@ -399,6 +397,9 @@ public class SnakesAndLadders {
 			temp.setCurrent(searchNode(temp.getCurrent().getId()+dice));
 			msg="The player "+temp.getSymbol()+" has rolled de dice and obtained a score of "+dice;
 			contPlaying=true;
+		}else if((temp.getCurrent().getId()+dice)>(colsAmount*rowsAmount)) {
+			msg="The player "+temp.getSymbol()+" has rolled de dice and obtained a score of "+dice +"\n"+"---The player has gone out of bounds and loses his turn.---";
+			changeActual();
 		}
 		return msg;
 	}

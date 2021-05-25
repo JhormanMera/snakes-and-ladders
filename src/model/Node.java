@@ -96,9 +96,9 @@ public class Node implements Serializable{
 	 * @return a string showing the content of the nodes with the players into the node
 	 */
 	public String container() {
-		if(ladder!=null) {
+		if(ladder!=null && list==null) {
 			return "["+ladder.getId()+"  ]";
-		}else if(snake!=null) {
+		}else if(snake!=null && list==null) {
 			return "["+snake.getLetter()+"  ]";
 		}else if(ladder!=null && list!=null) {
 			return "["+ladder.getId()+list.getPartner(list, list.getSymbol()+"")+" ]";
