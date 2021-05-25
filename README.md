@@ -13,6 +13,9 @@ Dare to enjoy this fun experience called Snakes and Ladders :)
 - `data` the folder that contains the application serializable.
 - `docs` the folder that contains the [functional requirements, the class diagram](https://github.com/JhormanMera/snakes-and-ladders/blob/main/docs/Requerimientos%20funcionales%20y%20Diagrama%20de%20Clases-Tarea%20Integradora%20II.pdf) and the program contracts.
 
+## Code Changes:
+
+- [Code improvements after first delivery](data/ChangeLog.pdf)
 
 ## Authors
 
